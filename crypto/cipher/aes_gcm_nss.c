@@ -56,6 +56,7 @@
 #include "cipher_test_cases.h"
 #include <secerr.h>
 #include <nspr.h>
+#include "nss_fips.h"
 
 srtp_debug_module_t srtp_mod_aes_gcm = {
     false,        /* debugging is off by default */
@@ -216,8 +217,13 @@ static srtp_err_status_t srtp_aes_gcm_nss_context_init(void *cv,
     /* explicitly cast away const of key */
     SECItem key_item = { siBuffer, (unsigned char *)(uintptr_t)key,
                          c->key_size };
-    c->key = PK11_ImportSymKey(slot, CKM_AES_GCM, PK11_OriginUnwrap,
-                               CKA_ENCRYPT, &key_item, NULL);
+    if (PK11_IsFIPS()) {
+      c->key = PK11_ImportSymKey_FIPS(slot, CKM_AES_GCM, PK11_OriginUnwrap,
+                                 CKA_ENCRYPT, &key_item, NULL);
+    } else {
+      c->key = PK11_ImportSymKey(slot, CKM_AES_GCM, PK11_OriginUnwrap,
+                                 CKA_ENCRYPT, &key_item, NULL);
+    }
     PK11_FreeSlot(slot);
 
     if (!c->key) {

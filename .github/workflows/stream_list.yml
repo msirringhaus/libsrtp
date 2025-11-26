@@ -2,9 +2,9 @@ name: Stream List CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, fips_CI ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, fips_CI ]
 
 jobs:
   build:

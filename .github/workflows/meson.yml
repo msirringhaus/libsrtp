@@ -2,9 +2,9 @@ name: Meson CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, fips_CI ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, fips_CI ]
   schedule:
     - cron: '20 4 * * 1'
 

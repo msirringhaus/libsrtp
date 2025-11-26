@@ -2,9 +2,9 @@ name: Code Formatting Check
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, fips_CI ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, fips_CI ]
 
 jobs:
   format-check:
